@@ -1,8 +1,10 @@
-import type { Cat } from '@prisma/client';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch }) => {
-	const response = await fetch('/api/cats');
-	const cats: Cat[] = await response.json();
-	return { cats };
-};
+export const load = (async ({ locals }) => {
+	if (locals.user) {
+		throw redirect(302, '/dashboard');
+	} else {
+		throw redirect(302, '/login');
+	}
+}) satisfies PageServerLoad;
