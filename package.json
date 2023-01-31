@@ -43,6 +43,6 @@
 		"prisma": "^4.9.0"
 	},
 	"prisma": {
-		"seed": "ts-node prisma/seed.ts"
+		"seed": "pnpx vite-node prisma/seed.ts"
 	}
 }
