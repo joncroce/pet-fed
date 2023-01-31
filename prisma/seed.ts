@@ -51,10 +51,10 @@ async function main() {
 		data: {
 			name: "Friskies Chicken Shreds",
 			brand: {
-				connect: friskiesFoodBrand
+				connect: { id: friskiesFoodBrand.id }
 			},
 			unit: {
-				connect: canFoodUnit
+				connect: { id: canFoodUnit.id }
 			},
 			wetOrDry: 'Wet',
 			form: 'Shreds',
@@ -67,10 +67,10 @@ async function main() {
 		data: {
 			name: "Friskies Whitefish Shreds",
 			brand: {
-				connect: friskiesFoodBrand
+				connect: { id: friskiesFoodBrand.id }
 			},
 			unit: {
-				connect: canFoodUnit
+				connect: { id: canFoodUnit.id }
 			},
 			wetOrDry: 'Wet',
 			form: 'Shreds',
@@ -83,10 +83,10 @@ async function main() {
 		data: {
 			name: "Crave Salmon Kibble",
 			brand: {
-				connect: craveFoodBrand
+				connect: { id: craveFoodBrand.id }
 			},
 			unit: {
-				connect: cupFoodUnit
+				connect: { id: cupFoodUnit.id }
 			},
 			wetOrDry: 'Dry',
 			form: 'Kibble',
