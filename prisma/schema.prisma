@@ -9,3 +9,53 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Cat {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  feedings Feeding[]
+}
+
+model Caretaker {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  feedings Feeding[]
+}
+
+model Food {
+  id           Int       @id @default(autoincrement())
+  brand        FoodBrand @relation(fields: [brandId], references: [id])
+  brandId      Int
+  wetOrDry     String
+  form         String
+  flavor       String
+  unitsInStock Float
+  unit         FoodUnit  @relation(fields: [unitId], references: [id])
+  unitId       Int
+  feedings     Feeding[]
+}
+
+model FoodBrand {
+  id    Int    @id @default(autoincrement())
+  name  String
+  foods Food[]
+}
+
+model FoodUnit {
+  id          Int    @id @default(autoincrement())
+  name        String
+  minFraction Float  @default(1)
+  foods       Food[]
+}
+
+model Feeding {
+  id          Int       @id @default(autoincrement())
+  cat         Cat       @relation(fields: [catId], references: [id])
+  catId       Int
+  caretaker   Caretaker @relation(fields: [caretakerId], references: [id])
+  caretakerId Int
+  food        Food      @relation(fields: [foodId], references: [id])
+  foodId      Int
+  quantity    Float
+  datetime    DateTime
+}
