@@ -24,6 +24,7 @@ model Caretaker {
 
 model Food {
   id           Int       @id @default(autoincrement())
+  name         String    @unique
   brand        FoodBrand @relation(fields: [brandId], references: [id])
   brandId      Int
   wetOrDry     String
@@ -37,15 +38,15 @@ model Food {
 
 model FoodBrand {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   foods Food[]
 }
 
 model FoodUnit {
-  id          Int    @id @default(autoincrement())
-  name        String
-  minFraction Float  @default(1)
-  foods       Food[]
+  id                  Int    @id @default(autoincrement())
+  name                String @unique
+  minFractionalAmount Float  @default(1)
+  foods               Food[]
 }
 
 model Feeding {
