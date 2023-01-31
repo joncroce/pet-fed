@@ -12,4 +12,4 @@ vite.config.ts.timestamp-*
 /playwright-report/
 /playwright/.cache/
 /prisma/migrations/
-/prisma/dev.db
+/prisma/*.db*
