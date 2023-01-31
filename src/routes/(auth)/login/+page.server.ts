@@ -3,7 +3,6 @@ import { fail, redirect } from '@sveltejs/kit';
 import bcrypt from 'bcrypt';
 import type { Action, Actions, PageServerLoad } from './$types';
 
-
 export const load = (async ({ locals }) => {
 	if (locals.user) {
 		throw redirect(302, '/dashboard');
@@ -15,12 +14,7 @@ const login: Action = async ({ cookies, request }) => {
 	const username = data.get('username');
 	const password = data.get('password');
 
-	if (
-		typeof username !== 'string' ||
-		typeof password !== 'string' ||
-		!username ||
-		!password
-	) {
+	if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
 		return fail(400, { invalid: true });
 	}
 
@@ -38,7 +32,7 @@ const login: Action = async ({ cookies, request }) => {
 
 	const authenticatedUser = await db.user.update({
 		where: { username: user.username },
-		data: { authToken: crypto.randomUUID() },
+		data: { authToken: crypto.randomUUID() }
 	});
 
 	cookies.set('auth', authenticatedUser.authToken, {
@@ -46,7 +40,7 @@ const login: Action = async ({ cookies, request }) => {
 		httpOnly: true,
 		sameSite: 'strict',
 		secure: process.env.NODE_ENV === 'production',
-		maxAge: 60 * 60 * 24 * 7, // One week
+		maxAge: 60 * 60 * 24 * 7 // One week
 	});
 
 	throw redirect(302, '/dashboard');

@@ -9,7 +9,7 @@ export const load = (async ({ locals, fetch }) => {
 
 	const headers = {
 		headers: {
-			'Authorization': `Bearer ${API_KEY}`
+			Authorization: `Bearer ${API_KEY}`
 		}
 	};
 	const response = await fetch('/api/pets', headers);

@@ -15,17 +15,12 @@ const register: Action = async ({ request }) => {
 	const username = data.get('username');
 	const password = data.get('password');
 
-	if (
-		typeof username !== 'string' ||
-		typeof password !== 'string' ||
-		!username ||
-		!password
-	) {
+	if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
 		return fail(400, { invalid: true });
 	}
 
 	const user = await db.user.findUnique({
-		where: { username },
+		where: { username }
 	});
 
 	if (user) {
@@ -36,8 +31,8 @@ const register: Action = async ({ request }) => {
 		data: {
 			username,
 			passwordHash: await bcrypt.hash(password, 10),
-			authToken: crypto.randomUUID(),
-		},
+			authToken: crypto.randomUUID()
+		}
 	});
 
 	throw redirect(303, '/login');

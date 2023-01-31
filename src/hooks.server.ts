@@ -7,7 +7,11 @@ export const handle: Handle = (async ({ event, resolve }) => {
 
 	if (event.url.pathname.startsWith('/api')) {
 		const authorization = event.request.headers.get('Authorization');
-		if (!authorization || !authorization.startsWith('Bearer ') || authorization.slice(7) !== API_KEY) {
+		if (
+			!authorization ||
+			!authorization.startsWith('Bearer ') ||
+			authorization.slice(7) !== API_KEY
+		) {
 			return json({ error: 'Unauthorized Request' }, { status: 401 });
 		}
 	}

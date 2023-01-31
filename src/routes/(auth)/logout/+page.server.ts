@@ -6,5 +6,5 @@ export const actions: Actions = {
 		console.log(`in action to delete cookie on logout`);
 		cookies.delete('auth');
 		throw redirect(302, '/login');
-	},
+	}
 };
