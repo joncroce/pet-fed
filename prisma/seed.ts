@@ -4,45 +4,25 @@ const prisma = new PrismaClient();
 
 async function main() {
 
-	// Create some Cats
-	const muffinCat = await prisma.cat.create({
-		data: { name: 'Muffin' }
-	});
-
-	const cupcakeCat = await prisma.cat.create({
-		data: { name: 'Cupcake' }
-	});
-
-	// Create some Caretakers
-	const dianeCaretaker = await prisma.caretaker.create({
-		data: { name: 'Diane' }
-	});
-
-	const busterCaretaker = await prisma.caretaker.create({
-		data: { name: 'Buster' }
-	});
-
-	// Create some FoodBrands
-	const friskiesFoodBrand = await prisma.foodBrand.create({
-		data: { name: 'Friskies' }
-	});
-
-	const craveFoodBrand = await prisma.foodBrand.create({
-		data: { name: 'Crave' }
-	});
-
-	// Create some FoodUnits
-	const canFoodUnit = await prisma.foodUnit.create({
+	// Create a Species
+	const cat = await prisma.species.create({
 		data: {
-			name: 'Can',
-			minFractionalAmount: 0.5
+			name: 'Cat'
 		}
 	});
 
-	const cupFoodUnit = await prisma.foodUnit.create({
+	// Create some Pets
+	const muffinCat = await prisma.pet.create({
 		data: {
-			name: 'Cup',
-			minFractionalAmount: 0.25
+			name: 'Muffin',
+			species: { connect: { id: cat.id } }
+		}
+	});
+
+	const cupcakeCat = await prisma.pet.create({
+		data: {
+			name: 'Cupcake',
+			species: { connect: { id: cat.id } }
 		}
 	});
 
@@ -50,48 +30,30 @@ async function main() {
 	const friskiesChickenShreds = await prisma.food.create({
 		data: {
 			name: "Friskies Chicken Shreds",
-			brand: {
-				connect: { id: friskiesFoodBrand.id }
-			},
-			unit: {
-				connect: { id: canFoodUnit.id }
-			},
-			wetOrDry: 'Wet',
-			form: 'Shreds',
-			flavor: 'Chicken',
-			unitsInStock: 72
+			species: { connect: { id: cat.id } },
+			unitType: "Can",
+			unitsInStock: 72,
+			minFractionalAmount: 0.5
 		}
 	});
 
 	const friskiesWhitefishShreds = await prisma.food.create({
 		data: {
-			name: "Friskies Whitefish Shreds",
-			brand: {
-				connect: { id: friskiesFoodBrand.id }
-			},
-			unit: {
-				connect: { id: canFoodUnit.id }
-			},
-			wetOrDry: 'Wet',
-			form: 'Shreds',
-			flavor: 'Whitefish',
-			unitsInStock: 28
+			name: "Friskies Prime Filets Turkey Dinner in Gravy",
+			species: { connect: { id: cat.id } },
+			unitType: "Can",
+			unitsInStock: 28,
+			minFractionalAmount: 0.5
 		}
 	});
 
-	const craveSalmonKibble = await prisma.food.create({
+	const craveSalmonDry = await prisma.food.create({
 		data: {
-			name: "Crave Salmon Kibble",
-			brand: {
-				connect: { id: craveFoodBrand.id }
-			},
-			unit: {
-				connect: { id: cupFoodUnit.id }
-			},
-			wetOrDry: 'Dry',
-			form: 'Kibble',
-			flavor: 'Salmon',
-			unitsInStock: 51.75
+			name: "Crave High Protein Adult Salmon Dry Food",
+			species: { connect: { id: cat.id } },
+			unitType: "Cup",
+			unitsInStock: 51.75,
+			minFractionalAmount: 0.25
 		}
 	});
 }

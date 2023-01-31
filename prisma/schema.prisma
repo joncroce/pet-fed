@@ -10,53 +10,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cat {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  feedings Feeding[]
+model User {
+  id           String     @id @default(uuid())
+  username     String     @unique
+  passwordHash String
+  authToken    String     @unique
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt()
+  Caretaker    Caretaker?
 }
 
 model Caretaker {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  feedings Feeding[]
+  id        Int       @id @default(autoincrement())
+  name      String
+  user      User      @relation(references: [id], fields: [userId])
+  userId    String    @unique
+  feedings  Feeding[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
 }
 
-model Food {
-  id           Int       @id @default(autoincrement())
-  name         String    @unique
-  brand        FoodBrand @relation(fields: [brandId], references: [id])
-  brandId      Int
-  wetOrDry     String
-  form         String
-  flavor       String
-  unitsInStock Float
-  unit         FoodUnit  @relation(fields: [unitId], references: [id])
-  unitId       Int
-  feedings     Feeding[]
+model Pet {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  species   Species   @relation(references: [id], fields: [speciesId])
+  speciesId Int
+  feedings  Feeding[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
 }
 
-model FoodBrand {
+model Species {
   id    Int    @id @default(autoincrement())
   name  String @unique
+  pets  Pet[]
   foods Food[]
 }
 
-model FoodUnit {
-  id                  Int    @id @default(autoincrement())
-  name                String @unique
-  minFractionalAmount Float  @default(1)
-  foods               Food[]
+model Food {
+  id                  Int       @id @default(autoincrement())
+  name                String    @unique
+  species             Species   @relation(references: [id], fields: [speciesId])
+  speciesId           Int
+  unitType            String
+  unitsInStock        Float
+  minFractionalAmount Float     @default(1)
+  feedings            Feeding[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt()
 }
 
 model Feeding {
   id          Int       @id @default(autoincrement())
-  cat         Cat       @relation(fields: [catId], references: [id])
-  catId       Int
-  caretaker   Caretaker @relation(fields: [caretakerId], references: [id])
+  pet         Pet       @relation(references: [id], fields: [petId])
+  petId       Int
+  caretaker   Caretaker @relation(references: [id], fields: [caretakerId])
   caretakerId Int
-  food        Food      @relation(fields: [foodId], references: [id])
+  food        Food      @relation(references: [id], fields: [foodId])
   foodId      Int
   quantity    Float
   datetime    DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt()
 }
