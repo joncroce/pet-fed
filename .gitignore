@@ -11,3 +11,5 @@ vite.config.ts.timestamp-*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/prisma/migrations/
+/prisma/dev.db
