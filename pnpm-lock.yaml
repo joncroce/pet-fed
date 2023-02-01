@@ -16,6 +16,7 @@ specifiers:
   eslint-plugin-svelte3: ^4.0.0
   postcss: ^8.4.14
   postcss-load-config: ^4.0.1
+  postcss-nested: ^6.0.0
   postcss-preset-env: ^8.0.1
   prettier: ^2.8.0
   prettier-plugin-prisma: ^4.9.0
@@ -47,6 +48,7 @@ devDependencies:
   eslint-plugin-svelte3: 4.0.0_4omm2ewoudhgnmf7aocafatnc4
   postcss: 8.4.21
   postcss-load-config: 4.0.1_postcss@8.4.21
+  postcss-nested: 6.0.0_postcss@8.4.21
   postcss-preset-env: 8.0.1_postcss@8.4.21
   prettier: 2.8.3
   prettier-plugin-prisma: 4.9.0_prettier@2.8.3
@@ -2142,6 +2144,16 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.4.21
+    dev: true
+
+  /postcss-nested/6.0.0_postcss@8.4.21:
+    resolution: {integrity: sha512-0DkamqrPcmkBDsLn+vQDIrtkSbNkv5AD/M322ySo9kqFkCIYklym2xEmWkwo+Y3/qZo34tzEPNUw4y7yMCdv5w==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.2.14
+    dependencies:
+      postcss: 8.4.21
+      postcss-selector-parser: 6.0.11
     dev: true
 
   /postcss-nesting/11.0.1_postcss@8.4.21:

@@ -27,6 +27,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
+		"postcss-nested": "^6.0.0",
 		"postcss-preset-env": "^8.0.1",
 		"prettier": "^2.8.0",
 		"prettier-plugin-prisma": "^4.9.0",
