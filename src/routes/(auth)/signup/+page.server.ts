@@ -24,7 +24,7 @@ const register: Action = async ({ request }) => {
 	});
 
 	if (user) {
-		return fail(400, { user: true });
+		return fail(400, { user: true, username, password });
 	}
 
 	await db.user.create({

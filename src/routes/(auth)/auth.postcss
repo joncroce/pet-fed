@@ -1,0 +1,107 @@
+header {
+	.wrapper {
+		padding-inline: 1rem;
+
+		a {
+			display: flex;
+			gap: 0.25em;
+			font-size: 1.3rem;
+			line-height: 1;
+			font-family: 'Gantari', sans-serif;
+			color: var(--color-tan-light);
+		}
+	}
+}
+
+form {
+		margin: auto;
+		max-width: 40ch;
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		background: var(--color-bone);
+		border: 2px solid var(--color-chocolate-dark);
+		border-radius: 8px;
+		font-family: 'Gantari', sans-serif;
+		font-size: 1.5rem;
+		box-shadow: 1.9px 1.4px 3.4px rgba(0, 0, 0, 0.034), 4.7px 3.3px 8.2px rgba(0, 0, 0, 0.048),
+			8.8px 6.3px 15.4px rgba(0, 0, 0, 0.06), 15.6px 11.2px 27.5px rgba(0, 0, 0, 0.072),
+			29.2px 20.9px 51.4px rgba(0, 0, 0, 0.086);
+	}
+
+	.form-field {
+		padding-inline: 2em;
+		padding-block-end: 0.5em;
+	}
+
+	h2 {
+		font-family: 'Trocchi', serif;
+		padding-block: 0.5em;
+		padding-inline: 2em;
+		text-align: center;
+	}
+
+	label {
+		font-weight: 600;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 1rem;
+	}
+
+	figure {
+		margin: 0;
+		font-size: 1.2rem;
+	}
+
+	figure figcaption[data-validation-status='EMPTY'] {
+		color: var(--color-gray-dark);
+	}
+
+	figcaption[data-validation-status='ERROR'] {
+		color: var(--color-red);
+	}
+
+	figcaption[data-validation-status='OK'] {
+		color: var(--color-green);
+	}
+
+
+	figure.error-message > figcaption {
+		display: flex;
+		justify-content: center;
+		gap: 0.25em;
+		font-weight: 800;
+		font-size: 1.5rem;
+		text-align: center;
+		color: var(--color-red);
+		line-height: 1;		
+		
+		span.username {
+			color: black;
+		}
+	}
+
+	.form-controls {
+		padding-block: 0.5em;
+		padding-inline: 2em;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		border-top: 1px solid var(--color-chocolate-dark);
+	}
+
+	button {
+		padding-block: 0.5em;
+		width: 100%;
+		border-radius: 0.25em;
+		font-size: 1.1em;
+		cursor: pointer;
+	}
+
+	button[disabled] {
+		background-color: var(--color-gray);
+		color: var(--color-bone);
+		cursor: not-allowed;
+		border-style: dotted;
+	}
