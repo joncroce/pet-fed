@@ -49,39 +49,40 @@
 <footer />
 
 <style lang="postcss">
-	.content-wrapper {
-		margin: 0 auto;
-		max-width: var(--width-content-max);
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-
-		.logo {
+	header {
+		.content-wrapper {
+			margin: 0 auto;
+			max-width: var(--width-content-max);
 			display: flex;
-			padding-inline: 1rem;
-			* {
-				fill: var(--color-tan-light);
-			}
-		}
+			justify-content: space-between;
+			align-items: center;
 
-		nav {
-			font-family: sans-serif;
-			display: flex;
-			justify-content: flex-end;
-			align-items: flex-end;
-			gap: 0.5rem;
-
-			span {
-				font-size: 1.4rem;
-				color: var(--color-tan-light);
+			.logo {
+				display: flex;
+				padding-inline: 1rem;
+				* {
+					fill: var(--color-tan-light);
+				}
 			}
 
-			a {
-				margin-inline: 1rem;
+			nav {
+				font-family: sans-serif;
+				display: flex;
+				justify-content: flex-end;
+				align-items: flex-end;
+				gap: 0.5rem;
+
+				span {
+					font-size: 1.4rem;
+					color: var(--color-tan-light);
+				}
+
+				a {
+					margin-inline: 1rem;
+				}
 			}
 		}
 	}
-
 	section.invitation {
 		margin-block: 8rem;
 		display: grid;
