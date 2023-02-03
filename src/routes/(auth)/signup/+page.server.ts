@@ -35,12 +35,29 @@ const register: Action = async ({ request }) => {
 		}
 	});
 
-	await db.person.create({
+	const createdPerson = await db.person.create({
 		data: {
 			displayName: createdUser.username,
 			user: {
 				connect: {
 					id: createdUser.id
+				}
+			}
+		}
+	});
+
+	const createdResidence = await db.residence.create({ data: {} });
+
+	await db.personsOnResidences.create({
+		data: {
+			person: {
+				connect: {
+					id: createdPerson.id
+				}
+			},
+			residence: {
+				connect: {
+					id: createdResidence.id
 				}
 			}
 		}
