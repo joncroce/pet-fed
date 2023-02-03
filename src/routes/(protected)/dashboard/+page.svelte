@@ -26,8 +26,8 @@
 				>
 			</li>
 			<li>
-				<a href="/dashboard/households"
-					><div class="header">Households</div>
+				<a href="/dashboard/residences"
+					><div class="header">Residences</div>
 					<div class="icon">
 						<Icon icon="teenyicons:house-solid" />
 					</div></a
