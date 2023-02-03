@@ -27,11 +27,22 @@ const register: Action = async ({ request }) => {
 		return fail(400, { user: true, username, password });
 	}
 
-	await db.user.create({
+	const createdUser = await db.user.create({
 		data: {
 			username,
 			passwordHash: await bcrypt.hash(password, 10),
 			authToken: crypto.randomUUID()
+		}
+	});
+
+	await db.person.create({
+		data: {
+			displayName: createdUser.username,
+			user: {
+				connect: {
+					id: createdUser.id
+				}
+			}
 		}
 	});
 
