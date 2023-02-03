@@ -5,7 +5,7 @@ const config = {
 	plugins: [
 		postcssNested(),
 		postcssPresetEnv({
-			stage: 2,
+			stage: 2
 		})
 	]
 };

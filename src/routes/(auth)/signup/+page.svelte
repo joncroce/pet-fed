@@ -7,7 +7,7 @@
 	export let form: ActionData;
 
 	const usernameValidationMessage = `6-24 characters long. Letters, numbers, underscores, and hyphens only.`;
-	const usernameValidationRegex = /^[\w\-]{6,24}$/;
+	const usernameValidationRegex = /^[\w-]{6,24}$/;
 
 	const passwordValidationMessage = `8-32 characters long.`;
 	const passwordValidationRegex = /^[\w~`!@#$%^&*()\-+={[}\]|\\:;"'<,>.?/]{8,32}$/;
