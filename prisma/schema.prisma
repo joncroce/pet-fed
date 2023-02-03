@@ -11,65 +11,98 @@ datasource db {
 }
 
 model User {
-  id           String     @id @default(uuid())
-  username     String     @unique
+  id           String   @id @default(uuid())
+  username     String   @unique
   passwordHash String
-  authToken    String     @unique
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt()
-  Caretaker    Caretaker?
+  authToken    String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt()
+  person       Person?
 }
 
-model Caretaker {
-  id        Int       @id @default(autoincrement())
-  name      String
-  user      User      @relation(references: [id], fields: [userId])
-  userId    String    @unique
-  feedings  Feeding[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt()
+model Person {
+  id           String                @id @default(uuid())
+  displayName  String
+  User         User                  @relation(references: [id], fields: [userId])
+  userId       String                @unique
+  pets         PersonsOnPets[]
+  residencesAt PersonsOnResidences[]
+  feedings     Feeding[]
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt()
 }
 
 model Pet {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  species   Species   @relation(references: [id], fields: [speciesId])
-  speciesId Int
-  feedings  Feeding[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt()
+  id         String             @id @default(uuid())
+  name       String             @unique
+  persons    PersonsOnPets[]
+  residences PetsOnResidences[]
+  feedings   Feeding[]
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt()
 }
 
-model Species {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  pets  Pet[]
-  foods Food[]
+model Residence {
+  id        String                @id @default(uuid())
+  name      String
+  personsAt PersonsOnResidences[]
+  petsAt    PetsOnResidences[]
+  foods     Food[]
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt()
 }
 
 model Food {
-  id                  Int       @id @default(autoincrement())
-  name                String    @unique
-  species             Species   @relation(references: [id], fields: [speciesId])
-  speciesId           Int
-  unitType            String
-  unitsInStock        Float
-  minFractionalAmount Float     @default(1)
-  feedings            Feeding[]
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt()
+  id            String    @id @default(uuid())
+  name          String
+  residence     Residence @relation(fields: [residenceId], references: [id])
+  residenceId   String
+  amountInStock Int
+  feedings      Feeding[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt()
 }
 
 model Feeding {
-  id          Int       @id @default(autoincrement())
-  pet         Pet       @relation(references: [id], fields: [petId])
-  petId       Int
-  caretaker   Caretaker @relation(references: [id], fields: [caretakerId])
-  caretakerId Int
-  food        Food      @relation(references: [id], fields: [foodId])
-  foodId      Int
-  quantity    Float
-  datetime    DateTime
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt()
+  id        String   @id @default(uuid())
+  person    Person   @relation(fields: [personId], references: [id])
+  personId  String
+  pet       Pet      @relation(fields: [petId], references: [id])
+  petId     String
+  food      Food     @relation(fields: [foodId], references: [id])
+  foodId    String
+  amount    Int
+  time      DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model PersonsOnPets {
+  pet      Pet     @relation(fields: [petId], references: [id])
+  petId    String
+  person   Person  @relation(fields: [personId], references: [id])
+  personId String
+  isOwner  Boolean
+
+  @@id([petId, personId])
+}
+
+model PersonsOnResidences {
+  residence   Residence @relation(fields: [residenceId], references: [id])
+  residenceId String
+  person      Person    @relation(fields: [personId], references: [id])
+  personId    String
+  isManager   Boolean
+
+  @@id([residenceId, personId])
+}
+
+model PetsOnResidences {
+  residence   Residence @relation(fields: [residenceId], references: [id])
+  residenceId String
+  pet         Pet       @relation(fields: [petId], references: [id])
+  petId       String
+  isPresent   Boolean
+
+  @@id([residenceId, petId])
 }
