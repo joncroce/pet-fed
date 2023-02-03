@@ -23,7 +23,7 @@ model User {
 model Person {
   id           String                @id @default(uuid())
   displayName  String
-  User         User                  @relation(references: [id], fields: [userId])
+  user         User                  @relation(fields: [userId], references: [id])
   userId       String                @unique
   pets         PersonsOnPets[]
   residencesAt PersonsOnResidences[]
@@ -44,7 +44,7 @@ model Pet {
 
 model Residence {
   id        String                @id @default(uuid())
-  name      String
+  name      String                @default("Home")
   personsAt PersonsOnResidences[]
   petsAt    PetsOnResidences[]
   foods     Food[]
@@ -53,14 +53,16 @@ model Residence {
 }
 
 model Food {
-  id            String    @id @default(uuid())
-  name          String
-  residence     Residence @relation(fields: [residenceId], references: [id])
-  residenceId   String
-  amountInStock Int
-  feedings      Feeding[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt()
+  id                  String    @id @default(uuid())
+  name                String    @default("Food")
+  residence           Residence @relation(fields: [residenceId], references: [id])
+  residenceId         String
+  amountInStock       Float     @default(0.00)
+  minFractionalAmount Float     @default(1.00)
+  unitName            String    @default("unit")
+  feedings            Feeding[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt()
 }
 
 model Feeding {
@@ -71,7 +73,7 @@ model Feeding {
   petId     String
   food      Food     @relation(fields: [foodId], references: [id])
   foodId    String
-  amount    Int
+  amount    Float    @default(1.00)
   time      DateTime @default(now())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -82,7 +84,7 @@ model PersonsOnPets {
   petId    String
   person   Person  @relation(fields: [personId], references: [id])
   personId String
-  isOwner  Boolean
+  isOwner  Boolean @default(true)
 
   @@id([petId, personId])
 }
@@ -92,7 +94,7 @@ model PersonsOnResidences {
   residenceId String
   person      Person    @relation(fields: [personId], references: [id])
   personId    String
-  isManager   Boolean
+  isManager   Boolean   @default(true)
 
   @@id([residenceId, personId])
 }
@@ -102,7 +104,7 @@ model PetsOnResidences {
   residenceId String
   pet         Pet       @relation(fields: [petId], references: [id])
   petId       String
-  isPresent   Boolean
+  isPresent   Boolean   @default(true)
 
   @@id([residenceId, petId])
 }

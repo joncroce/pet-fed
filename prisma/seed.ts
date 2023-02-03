@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 
 async function main() {
 	/* TODO based on new schema
-	** 
-	**    
-	*/
+	 **
+	 **
+	 */
 }
 
 main()
