@@ -26,6 +26,7 @@ model Person {
   user        User            @relation(fields: [userId], references: [id])
   userId      String          @unique
   pets        PersonsOnPets[]
+  foods       Food[]
   feedings    Feeding[]
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt()
@@ -43,10 +44,12 @@ model Pet {
 model Food {
   id                  String    @id @default(uuid())
   name                String    @default("Food")
-  amountInStock       Float     @default(0.00)
-  minFractionalAmount Float     @default(1.00)
-  unitName            String    @default("unit")
+  amountInStock       Float     @default(0)
+  minFractionalAmount Float     @default(1)
+  unitName            String    @default("Units")
   feedings            Feeding[]
+  person              Person    @relation(fields: [personId], references: [id])
+  personId            String
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt()
 }
