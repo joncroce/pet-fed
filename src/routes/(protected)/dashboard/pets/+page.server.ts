@@ -2,39 +2,11 @@ import { fail, redirect, type ActionResult } from '@sveltejs/kit';
 import { db } from '$lib/database';
 import type { PageServerLoad } from './$types';
 import type { Action, Actions } from '../$types';
-// import { API_KEY } from '$env/static/private';
 
-export const load = (async ({ locals /* fetch */ }) => {
+export const load = (async ({ locals }) => {
 	if (!locals.user) {
 		throw redirect(302, '/login');
 	}
-
-	// const user = await db.user.findUnique({
-	// 	where: {
-	// 		username: locals.user.name
-	// 	},
-	// 	include: {
-	// 		person: {
-	// 			select: {
-	// 				id: true,
-	// 				displayName: true,
-	// 				pets: {
-	// 					include: {
-	// 						pet: true,
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// });
-
-	// const response = await fetch(`/api/persons/${locals.user.personId}/pets`, {
-	// 	headers: {
-	// 		Authorization: `Bearer ${API_KEY}`
-	// 	}
-	// });
-
-	// const data = response.json();
 
 	const personsOnPets = await db.personsOnPets.findMany({
 		where: { personId: locals.user.personId },
@@ -46,8 +18,6 @@ export const load = (async ({ locals /* fetch */ }) => {
 		const ownedByYou = isOwner;
 		return { id, name, feedings, ownedByYou };
 	});
-
-	console.log(pets);
 
 	return {
 		personId: locals.user.personId,
