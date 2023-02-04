@@ -33,7 +33,7 @@ model Person {
 
 model Pet {
   id        String          @id @default(uuid())
-  name      String          @unique
+  name      String
   persons   PersonsOnPets[]
   feedings  Feeding[]
   createdAt DateTime        @default(now())
