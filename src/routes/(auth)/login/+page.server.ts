@@ -9,7 +9,7 @@ export const load = (async ({ locals }) => {
 	}
 }) satisfies PageServerLoad;
 
-const login: Action = async ({ cookies, request }) => {
+const login: Action = async ({ request, cookies }) => {
 	const data = await request.formData();
 	const username = data.get('username');
 	const password = data.get('password');
@@ -43,7 +43,7 @@ const login: Action = async ({ cookies, request }) => {
 		maxAge: 60 * 60 * 24 * 7 // One week
 	});
 
-	throw redirect(302, '/dashboard');
+	throw redirect(303, '/dashboard');
 };
 
 export const actions: Actions = { login };
