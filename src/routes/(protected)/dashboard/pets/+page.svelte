@@ -30,12 +30,13 @@
 					action="?/createPet"
 					method="POST"
 					use:enhance={() => {
-						return async ({ result }) => {
+						return async ({ result, update }) => {
 							console.log(result);
 							if (result.type === 'success') {
 								$createPetMessage = `Successfully created new Pet ${result.data?.name}`;
 								showCreatePetForm = false;
 								$name = '';
+								update();
 							}
 						};
 					}}
