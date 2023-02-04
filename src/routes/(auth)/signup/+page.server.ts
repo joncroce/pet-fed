@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 };
 
-const register: Action = async ({ request }) => {
+const register: Action = async ({ request, cookies }) => {
 	const data = await request.formData();
 	const username = data.get('username');
 	const password = data.get('password');
@@ -46,7 +46,15 @@ const register: Action = async ({ request }) => {
 		}
 	});
 
-	throw redirect(303, '/login');
+	cookies.set('auth', createdUser.authToken, {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'strict',
+		secure: process.env.NODE_ENV === 'production',
+		maxAge: 60 * 60 * 24 * 7 // One week
+	});
+
+	throw redirect(303, '/dashboard');
 };
 
 export const actions: Actions = { register };
