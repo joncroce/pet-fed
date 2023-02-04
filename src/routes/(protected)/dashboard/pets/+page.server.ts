@@ -19,8 +19,7 @@ export const load = (async ({ locals }) => {
 	});
 
 	return {
-		personId: locals.user.personId,
-		pets: pets
+		pets
 	};
 }) satisfies PageServerLoad;
 
@@ -34,25 +33,28 @@ const createPet: Action = async ({ request, locals }) => {
 	}
 
 	try {
-		await db.person.update({
-			select: {
-				id: true
-			},
-			where: {
-				id: personId
-			},
+		const newPet = await db.pet.create({
 			data: {
-				pets: {
-					create: {
-						pet: {
-							create: {
-								name: name
-							}
-						}
+				name: name
+			}
+		});
+
+		const newPersonsOnPets = await db.personsOnPets.create({
+			data: {
+				person: {
+					connect: {
+						id: personId
+					}
+				},
+				pet: {
+					connect: {
+						id: newPet.id
 					}
 				}
 			}
 		});
+
+		console.log(JSON.stringify(newPersonsOnPets, undefined, 2));
 
 		return <ActionResult>{ type: 'success', status: 201, name };
 	} catch (e) {
@@ -61,4 +63,4 @@ const createPet: Action = async ({ request, locals }) => {
 	}
 };
 
-export const actions: Actions = { createPet };
+export const actions = { createPet } satisfies Actions;
