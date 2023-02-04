@@ -25,14 +25,6 @@
 					</div></a
 				>
 			</li>
-			<li>
-				<a href="/dashboard/residences"
-					><div class="header">Residences</div>
-					<div class="icon">
-						<Icon icon="teenyicons:house-solid" />
-					</div></a
-				>
-			</li>
 		</ul>
 	</nav>
 </main>
@@ -48,7 +40,7 @@
 			ul {
 				list-style: none;
 				display: grid;
-				grid-template-columns: repeat(2, max(25vw, 400px));
+				grid-template-columns: repeat(3, min(25vw, 400px));
 				gap: 1rem;
 
 				li {
