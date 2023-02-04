@@ -1,7 +1,6 @@
 import { fail, redirect, type ActionResult } from '@sveltejs/kit';
 import { db } from '$lib/database';
-import type { PageServerLoad } from './$types';
-import type { Action, Actions } from '../$types';
+import type { Action, Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
 	if (!locals.user) {
