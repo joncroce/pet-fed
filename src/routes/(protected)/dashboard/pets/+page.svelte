@@ -52,6 +52,27 @@
 							required
 						/>
 					</label>
+					<label for="household"
+						>Household
+						<div class="select">
+							<select id="household" name="household">
+								{#each data.availableHouseholds as household}
+									<option value={household.id}>{household.name}</option>
+								{/each}
+							</select>
+							<span class="focus" />
+						</div>
+					</label>
+					<label for="isPresent"
+						>Pet is at selected household
+						<input
+							id="isPresent"
+							name="isPresent"
+							type="checkbox"
+							value={form?.isPresent ?? 'true'}
+							checked={form?.isPresent ?? true}
+						/>
+					</label>
 					<div class="create_form_buttonset">
 						<button class="button button-cancel" type="button" on:click={toggleShowCreatePetForm}
 							>Cancel</button

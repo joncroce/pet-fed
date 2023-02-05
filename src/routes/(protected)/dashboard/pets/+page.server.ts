@@ -18,8 +18,16 @@ export const load = (async ({ locals }) => {
 		return { id, name, feedings, ownedByYou };
 	});
 
+	const personsOnHouseholds = await db.personsOnHouseholds.findMany({
+		where: { residentId: locals.user.personId, isManager: true },
+		select: { household: { select: { id: true, name: true } } }
+	});
+
+	const availableHouseholds = personsOnHouseholds.map((record) => record.household);
+
 	return {
-		pets
+		pets,
+		availableHouseholds
 	};
 }) satisfies PageServerLoad;
 
@@ -27,8 +35,17 @@ const createPet: Action = async ({ request, locals }) => {
 	const data = await request.formData();
 	const name = data.get('name');
 	const personId = locals.user?.personId;
+	const householdId = data.get('household');
+	const isPresent = data.get('isPresent');
 
-	if (typeof name !== 'string' || typeof personId !== 'string' || !name || !personId) {
+	if (
+		typeof name !== 'string' ||
+		typeof personId !== 'string' ||
+		typeof householdId !== 'string' ||
+		!name ||
+		!personId ||
+		!householdId
+	) {
 		return fail(400);
 	}
 
@@ -39,7 +56,7 @@ const createPet: Action = async ({ request, locals }) => {
 			}
 		});
 
-		const newPersonsOnPets = await db.personsOnPets.create({
+		await db.personsOnPets.create({
 			data: {
 				person: {
 					connect: {
@@ -50,11 +67,26 @@ const createPet: Action = async ({ request, locals }) => {
 					connect: {
 						id: newPet.id
 					}
-				}
+				},
+				isOwner: true
 			}
 		});
 
-		console.log(JSON.stringify(newPersonsOnPets, undefined, 2));
+		await db.petsOnHouseholds.create({
+			data: {
+				pet: {
+					connect: {
+						id: newPet.id
+					}
+				},
+				household: {
+					connect: {
+						id: householdId
+					}
+				},
+				isPresent: Boolean(isPresent)
+			}
+		});
 
 		return <ActionResult>{ type: 'success', status: 201, name };
 	} catch (e) {
