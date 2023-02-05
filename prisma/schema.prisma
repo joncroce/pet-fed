@@ -21,59 +21,98 @@ model User {
 }
 
 model Person {
-  id          String          @id @default(uuid())
-  displayName String
-  user        User            @relation(fields: [userId], references: [id])
-  userId      String          @unique
-  pets        PersonsOnPets[]
-  foods       Food[]
-  feedings    Feeding[]
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt()
+  id                  String                @id @default(uuid())
+  displayName         String
+  user                User                  @relation(fields: [userId], references: [id])
+  userId              String                @unique
+  pets                PersonsOnPets[]
+  feedings            Feeding[]
+  asHouseholdResident PersonsOnHouseholds[] @relation("resident")
+  asHouseholdInviter  PersonsOnHouseholds[] @relation("inviter")
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt()
+}
+
+model Household {
+  id        String                @id @default(uuid())
+  name      String
+  persons   PersonsOnHouseholds[]
+  pets      PetsOnHouseholds[]
+  foods     Food[]
+  feedings  Feeding[]
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt()
 }
 
 model Pet {
-  id        String          @id @default(uuid())
-  name      String
-  persons   PersonsOnPets[]
-  feedings  Feeding[]
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt()
+  id         String             @id @default(uuid())
+  name       String
+  persons    PersonsOnPets[]
+  households PetsOnHouseholds[]
+  feedings   Feeding[]
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt()
 }
 
 model Food {
-  id                  String    @id @default(uuid())
-  name                String    @default("Food")
-  amountInStock       Float     @default(0)
-  minFractionalAmount Float     @default(1)
-  unitName            String    @default("Units")
+  id                  String     @id @default(uuid())
+  name                String     @default("Food")
+  amountInStock       Float      @default(0)
+  minFractionalAmount Float      @default(1)
+  unitName            String     @default("Units")
   feedings            Feeding[]
-  person              Person    @relation(fields: [personId], references: [id])
-  personId            String
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt()
+  household           Household? @relation(fields: [householdId], references: [id], onDelete: SetNull)
+  householdId         String?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt()
 }
 
 model Feeding {
-  id        String   @id @default(uuid())
-  person    Person   @relation(fields: [personId], references: [id])
-  personId  String
-  pet       Pet      @relation(fields: [petId], references: [id])
-  petId     String
-  food      Food     @relation(fields: [foodId], references: [id])
-  foodId    String
-  amount    Float    @default(1.00)
-  time      DateTime @default(now())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  id          String     @id @default(uuid())
+  person      Person?    @relation(fields: [personId], references: [id], onDelete: SetNull)
+  personId    String?
+  pet         Pet?       @relation(fields: [petId], references: [id], onDelete: SetNull)
+  petId       String?
+  food        Food?      @relation(fields: [foodId], references: [id], onDelete: SetNull)
+  foodId      String?
+  household   Household? @relation(fields: [householdId], references: [id], onDelete: SetNull)
+  householdId String?
+  amount      Float      @default(1.00)
+  time        DateTime   @default(now())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt()
 }
 
 model PersonsOnPets {
   pet      Pet     @relation(fields: [petId], references: [id], onDelete: Cascade)
   petId    String
-  person   Person  @relation(fields: [personId], references: [id])
+  person   Person  @relation(fields: [personId], references: [id], onDelete: Cascade)
   personId String
-  isOwner  Boolean @default(true)
+  isOwner  Boolean @default(false)
 
   @@id([petId, personId])
+}
+
+model PersonsOnHouseholds {
+  resident           Person    @relation("resident", fields: [residentId], references: [id], onDelete: Cascade)
+  residentId         String
+  household          Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  householdId        String
+  inviter            Person?   @relation("inviter", fields: [inviterId], references: [id], onDelete: SetNull)
+  inviterId          String?
+  invitationAccepted Boolean   @default(false)
+  isManager          Boolean   @default(false)
+  isPresent          Boolean   @default(false)
+
+  @@id([residentId, householdId])
+}
+
+model PetsOnHouseholds {
+  pet         Pet       @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId       String
+  household   Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  householdId String
+  isPresent   Boolean   @default(true)
+
+  @@id([petId, householdId])
 }
