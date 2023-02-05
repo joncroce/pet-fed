@@ -36,7 +36,7 @@ h2 {
 
 .create_form-wrapper {
 	margin: auto auto;
-	
+
 	form {
 		padding: 1rem;
 		margin: auto;
@@ -54,11 +54,17 @@ h2 {
 			29.2px 20.9px 51.4px rgba(0, 0, 0, 0.086);
 
 		label {
-			font-weight: 600;
 			display: flex;
 			flex-direction: column;
 			align-items: stretch;
 			gap: 0.3em;
+		}
+
+		label:has(input[type="checkbox"]) {
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;
+			gap: 0.5em;
 		}
 	}
 }
