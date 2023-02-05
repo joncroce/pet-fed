@@ -35,7 +35,7 @@ const register: Action = async ({ request, cookies }) => {
 		}
 	});
 
-	await db.person.create({
+	const createdPerson = await db.person.create({
 		data: {
 			displayName: createdUser.username,
 			user: {
@@ -43,6 +43,29 @@ const register: Action = async ({ request, cookies }) => {
 					id: createdUser.id
 				}
 			}
+		}
+	});
+
+	const createdHousehold = await db.household.create({
+		data: {
+			name: 'Home'
+		}
+	});
+
+	await db.personsOnHouseholds.create({
+		data: {
+			household: {
+				connect: {
+					id: createdHousehold.id
+				}
+			},
+			resident: {
+				connect: {
+					id: createdPerson.id
+				}
+			},
+			isManager: true,
+			isPresent: true
 		}
 	});
 
