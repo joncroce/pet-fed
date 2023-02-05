@@ -17,6 +17,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Pet Fed — Pets</title>
+</svelte:head>
+
 <main>
 	<h2>Pets</h2>
 	<section class="create">
