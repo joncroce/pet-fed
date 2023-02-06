@@ -25,6 +25,14 @@
 					</div></a
 				>
 			</li>
+			<li>
+				<a href="/dashboard/households"
+					><div class="header">Households</div>
+					<div class="icon">
+						<Icon icon="teenyicons:house-solid" />
+					</div></a
+				>
+			</li>
 		</ul>
 	</nav>
 </main>
