@@ -8,11 +8,48 @@ export const load = (async ({ locals }) => {
 	}
 
 	const foods = await db.food.findMany({
-		where: { person: { id: locals.user.personId } }
+		where: {
+			household: {
+				persons: {
+					some: {
+						AND: {
+							residentId: {
+								equals: locals.user.personId
+							},
+							isManager: {
+								equals: true
+							}
+						}
+					}
+				}
+			}
+		},
+	});
+
+	const availableHouseholds = await db.household.findMany({
+		where: {
+			persons: {
+				some: {
+					AND: {
+						residentId: {
+							equals: locals.user.personId
+						},
+						isManager: {
+							equals: true
+						}
+					}
+				}
+			}
+		},
+		select: {
+			id: true,
+			name: true,
+		}
 	});
 
 	return {
-		foods
+		foods,
+		availableHouseholds
 	};
 }) satisfies PageServerLoad;
 
@@ -24,6 +61,7 @@ const create: Action = async ({ request, locals }) => {
 		return fail(401, { unauthorized: true });
 	}
 
+	const householdId = formData.get('household');
 	const name = formData.get('name');
 	const amountInStock = formData.get('amountInStock');
 	const unitName = formData.get('unitName');
@@ -42,21 +80,19 @@ const create: Action = async ({ request, locals }) => {
 		)
 	);
 
-	console.log(JSON.stringify(newFoodData, undefined, 2));
-
 	try {
 		const newFood = await db.food.create({
 			data: {
-				person: {
+				household: {
 					connect: {
-						id: personId
+						id: householdId
 					}
 				},
 				...newFoodData
 			}
 		});
 
-		return <ActionResult>{ type: 'success', status: 201, newFood };
+		return <ActionResult>{ type: 'success', status: 201, food: newFood };
 	} catch (e) {
 		console.log(e);
 		return fail(400, { invalid: true });
