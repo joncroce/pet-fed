@@ -100,7 +100,7 @@ model PersonsOnHouseholds {
   householdId        String
   inviter            Person?   @relation("inviter", fields: [inviterId], references: [id], onDelete: SetNull)
   inviterId          String?
-  invitationAccepted Boolean   @default(false)
+  invitationAccepted Boolean?
   isManager          Boolean   @default(false)
   isPresent          Boolean   @default(false)
 
