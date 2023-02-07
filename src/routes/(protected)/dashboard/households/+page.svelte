@@ -11,7 +11,7 @@
 	$: formDisplayStatus = Object.fromEntries(
 		data.households.map((household) => [
 			household.id,
-			Object.fromEntries(['pets', 'persons', 'foods'].map((subbroup) => [subbroup, false]))
+			Object.fromEntries(['pets', 'persons', 'foods'].map((subgroup) => [subgroup, false]))
 		])
 	);
 
@@ -148,6 +148,11 @@
 							<tr>
 								<td><strong>{food.name}</strong></td>
 								<td>{food.amountInStock} {food.unitName}</td>
+								<td
+									><a href={`/dashboard/foods/${food.id}`}
+										><Icon icon="material-symbols:edit-document" />Manage</a
+									></td
+								>
 							</tr>
 						{/each}
 					</tbody>
