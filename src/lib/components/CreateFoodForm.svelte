@@ -49,7 +49,7 @@
 			name="amountInStock"
 			type="number"
 			value={form?.amountInStock || null}
-			placeholder="1"
+			placeholder="0"
 			min={0}
 			max={10_000}
 		/>
