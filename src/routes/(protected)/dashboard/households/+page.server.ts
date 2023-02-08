@@ -83,7 +83,7 @@ export const load = (async ({ locals }) => {
 	};
 }) satisfies PageServerLoad;
 
-const editName: Action = async ({ request, locals }) => {
+const edit: Action = async ({ request, locals }) => {
 	const formData = await request.formData();
 	const personId = locals.user?.personId;
 
@@ -127,4 +127,4 @@ const editName: Action = async ({ request, locals }) => {
 	}
 };
 
-export const actions: Actions = { editName };
+export const actions: Actions = { edit };

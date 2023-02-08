@@ -3,53 +3,60 @@
 	import '../dashboard.postcss';
 	import type { PageData } from './$types';
 	import Icon from '@iconify/svelte';
-	import CreateFoodForm from '$lib/components/CreateFoodForm.svelte';
+	import Modal, { bind } from 'svelte-simple-modal';
+	import FoodForm from '$lib/components/CreateFoodForm.svelte';
+	import type { Component } from 'svelte-simple-modal/types/Modal.svelte';
+	import { writable, type Writable } from 'svelte/store';
+	import type { ComponentProps } from 'svelte';
+	import type { Food } from '@prisma/client';
+
+	const modal: Writable<Component | null> = writable(null);
+
+	const showCreateFoodModal = () =>
+		modal.set(
+			bind(FoodForm, {
+				form: {},
+				actionType: 'create',
+				disableHouseholdSelect: false,
+				availableHouseholds: data.availableHouseholds,
+				successCallback: (data) => {
+					const newFood = data?.food as Partial<Food>;
+					console.log('Successfully created food.');
+					addFoodMessage = `Successfully created new Food ${newFood.name}`;
+					modal.set(null);
+				},
+				cancel: () => modal.set(null),
+			} as ComponentProps<FoodForm>),
+		);
+
+	$: addFoodMessage = '';
 
 	export let data: PageData;
-
-	$: showAddFoodForm = false;
-	$: addFoodMessage = '';
-	function toggleShowAddFoodForm() {
-		showAddFoodForm = !showAddFoodForm;
-	}
 </script>
 
-<main>
-	<h2>Foods</h2>
-	<section class="create">
-		<div class="create_message">
-			{addFoodMessage}
-		</div>
-		{#if showAddFoodForm}
-			<div class="create_form-wrapper">
-				<CreateFoodForm
-					form={{}}
-					disableHouseholdSelect={false}
-					availableHouseholds={data.availableHouseholds}
-					successCallback={(data) => {
-						addFoodMessage = `Successfully created new Food ${data?.food.name}`;
-						showAddFoodForm = false;
-					}}
-					cancel={toggleShowAddFoodForm}
-				/>
+<Modal show={$modal}>
+	<main>
+		<h2>Foods</h2>
+		<section class="create">
+			<div class="create_message">
+				{addFoodMessage}
 			</div>
-		{:else}
-			<button class="button create_toggle-button" on:click={toggleShowAddFoodForm}
+			<button class="button create_toggle-button" on:click={showCreateFoodModal}
 				>Add New Food</button
 			>
-		{/if}
-	</section>
-	<section class="list">
-		<ul>
-			{#each data.foods as food}
-				<li class="card">
-					<a href={`foods/${food.id}`}>
-						<div class="card_name">{food.name}</div>
-						<div class="card_image"><Icon icon="game-icons:opened-food-can" /></div>
-						<div class="card_details" />
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</section>
-</main>
+		</section>
+		<section class="list">
+			<ul>
+				{#each data.foods as food}
+					<li class="card">
+						<a href={`foods/${food.id}`}>
+							<div class="card_name">{food.name}</div>
+							<div class="card_image"><Icon icon="game-icons:opened-food-can" /></div>
+							<div class="card_details" />
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</section>
+	</main>
+</Modal>

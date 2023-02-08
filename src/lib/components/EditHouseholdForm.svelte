@@ -11,11 +11,10 @@
 </script>
 
 <form
-	action="/dashboard/households?/editName"
+	action="/dashboard/households?/edit"
 	method="POST"
 	use:enhance={() => {
 		return async ({ result, update }) => {
-			console.log(result);
 			if (result.type === 'success') {
 				successCallback(result?.data);
 				update();
@@ -23,8 +22,8 @@
 		};
 	}}
 >
-	<h3 class="header">Edit Household Name</h3>
-	<input id="id" name="id" type="text" value={form?.id} hidden />
+	<h3 class="header">Edit Household</h3>
+	<input id="id" name="id" type="text" value={household.id} hidden />
 
 	<label for="name"
 		>Name

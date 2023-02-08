@@ -1,48 +1,66 @@
 <script lang="ts">
 	import '../dashboard.postcss';
-	import { writable, type Writable } from 'svelte/store';
-	import type { PageData } from './$types';
 	import Icon from '@iconify/svelte';
+	import EditHouseholdForm from '$lib/components/EditHouseholdForm.svelte';
 	import CreateFoodForm from '$lib/components/CreateFoodForm.svelte';
+	import EditFoodForm from '$lib/components/EditFoodForm.svelte';
 	import Modal, { bind } from 'svelte-simple-modal';
 	import type { Component } from 'svelte-simple-modal/types/Modal.svelte';
-	import EditHouseholdNameForm from '$lib/components/EditHouseholdNameForm.svelte';
+	import type { ComponentProps } from 'svelte';
+	import type { Food, Household } from '@prisma/client';
+	import { writable, type Writable } from 'svelte/store';
+	import type { PageData } from './$types';
 
 	const modal: Writable<Component | null> = writable(null);
+	const closeModal = () => modal.set(null);
+
 	const showCreateFoodModal = (householdId: string) =>
 		modal.set(
 			bind(CreateFoodForm, {
-				form: { household: householdId },
+				form: { householdId },
+				actionType: 'create',
 				disableHouseholdSelect: true,
 				availableHouseholds: [],
 				successCallback: () => {
 					console.log('Successfully created food.');
-					modal.set(null);
+					closeModal();
 				},
-				cancel: () => modal.set(null),
-			}),
+				cancel: closeModal,
+			} as ComponentProps<CreateFoodForm>),
 		);
 
-	const showEditHouseholdNameModal = (householdId: string, householdName: string) => {
-		const household = { id: householdId, name: householdName };
+	const showEditFoodModal = (food: Partial<Food>) =>
+		modal.set(
+			bind(EditFoodForm, {
+				form: { ...food },
+				food,
+				successCallback: () => {
+					console.log('Successfully updated food.');
+					closeModal();
+				},
+				cancel: closeModal,
+			} as ComponentProps<EditFoodForm>),
+		);
+
+	const showEditHouseholdModal = (household: Partial<Household>) => {
 		return modal.set(
-			bind(EditHouseholdNameForm, {
+			bind(EditHouseholdForm, {
 				form: { ...household },
 				household,
 				successCallback: () => {
-					console.log('Successfully updated household name.');
-					modal.set(null);
+					console.log('Successfully updated household.');
+					closeModal();
 				},
-				cancel: () => modal.set(null),
-			}),
+				cancel: closeModal,
+			} as ComponentProps<EditHouseholdForm>),
 		);
 	};
 
 	export let data: PageData;
 </script>
 
-<main>
-	<Modal show={$modal}>
+<Modal show={$modal}>
+	<main>
 		<h2>Households</h2>
 		{#each data.households as household}
 			<article class="household">
@@ -60,10 +78,12 @@
 					<button
 						class="button with-icon"
 						type="button"
-						on:click={() => showEditHouseholdNameModal(household.id, household.name)}
-						><Icon icon="material-symbols:edit" />Edit Name</button
+						data-form-action="edit"
+						on:click={() => showEditHouseholdModal(household)}
+						><Icon icon="material-symbols:edit" />Edit</button
 					>
 				</div>
+				<hr />
 				<section data-household-subgroup="pets">
 					<div class="household_subgroup_header">
 						<h4 class="household_subgroup_header_name">
@@ -170,7 +190,11 @@
 									<td><strong>{food.name}</strong></td>
 									<td>{food.amountInStock} {food.unitName}</td>
 									<td
-										><button class="button with-icon" type="button" data-form-action="edit"
+										><button
+											class="button with-icon"
+											type="button"
+											data-form-action="edit"
+											on:click={() => showEditFoodModal(food)}
 											><Icon icon="material-symbols:edit-document" />Edit</button
 										></td
 									>
@@ -181,11 +205,16 @@
 				</section>
 			</article>
 		{/each}
-	</Modal>
-</main>
+	</main>
+</Modal>
 
 <style lang="postcss">
 	.household {
+		padding: 1rem 2rem;
+		border: 2px solid var(--color-chocolate-dark);
+		border-radius: 1rem;
+		background-color: var(--color-bone);
+
 		&_header {
 			display: flex;
 			justify-content: space-between;
@@ -205,6 +234,10 @@
 					font-size: 0.5em;
 					color: var(--color-tan-dark);
 				}
+			}
+
+			button {
+				font-size: 1em;
 			}
 		}
 
