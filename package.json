@@ -42,8 +42,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^4.9.0",
+		"@prisma/client": "^4.10.0",
 		"bcrypt": "^5.1.0",
+		"dayjs": "^1.11.7",
 		"prisma": "^4.9.0"
 	},
 	"prisma": {
