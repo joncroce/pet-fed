@@ -25,6 +25,7 @@ specifiers:
   svelte: ^3.54.0
   svelte-check: ^3.0.1
   svelte-preprocess: ^4.10.7
+  svelte-simple-modal: ^1.5.2
   tslib: ^2.4.1
   typescript: ^4.9.3
   vite: ^4.0.0
@@ -56,6 +57,7 @@ devDependencies:
   svelte: 3.55.1
   svelte-check: 3.0.3_gqx7lw3sljhsd4bstor5m2aa2u
   svelte-preprocess: 4.10.7_b25a55hc532q56kmuqlrolam2i
+  svelte-simple-modal: 1.5.2_svelte@3.55.1
   tslib: 2.5.0
   typescript: 4.9.5
   vite: 4.0.4_@types+node@18.11.18
@@ -2718,6 +2720,14 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.55.1
       typescript: 4.9.5
+    dev: true
+
+  /svelte-simple-modal/1.5.2_svelte@3.55.1:
+    resolution: {integrity: sha512-kQ+9/bonxMMJe6dGTCPXBkYQQ4zF8rqqPp+PvTWOJB8QtB+Z0S/h7ZJRDZOAnkXTUClwd+Qmb2HHTIXVkjlSvA==}
+    peerDependencies:
+      svelte: ^3.31.2
+    dependencies:
+      svelte: 3.55.1
     dev: true
 
   /svelte/3.55.1:
