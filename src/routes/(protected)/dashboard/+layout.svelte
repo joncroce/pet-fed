@@ -17,7 +17,7 @@
 		<div class="user-info">
 			{#if $page.data.user}
 				<span>Logged in as <strong>{$page.data.user.name}</strong></span>
-				<form action="/logout" method="POST">
+				<form class="fieldless" action="/logout" method="POST">
 					<button class="button" type="submit">Logout</button>
 				</form>
 			{/if}
