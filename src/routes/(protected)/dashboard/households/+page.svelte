@@ -2,12 +2,13 @@
 	import '../dashboard.postcss';
 	import Icon from '@iconify/svelte';
 	import EditHouseholdForm from '$lib/components/EditHouseholdForm.svelte';
+	import CreateFeedingForm from '$lib/components/CreateFeedingForm.svelte';
 	import CreateFoodForm from '$lib/components/CreateFoodForm.svelte';
 	import EditFoodForm from '$lib/components/EditFoodForm.svelte';
 	import Modal, { bind } from 'svelte-simple-modal';
 	import type { Component } from 'svelte-simple-modal/types/Modal.svelte';
 	import type { ComponentProps } from 'svelte';
-	import type { Food, Household } from '@prisma/client';
+	import type { Feeding, Food, Household, Pet } from '@prisma/client';
 	import { writable, type Writable } from 'svelte/store';
 	import type { PageData } from './$types';
 
@@ -56,6 +57,31 @@
 		);
 	};
 
+	const showCreateFeedingForm = (
+		feeding: Partial<Feeding>,
+		householdData: { pets: Partial<Pet>[]; foods: Partial<Food>[] },
+	) => {
+		const initialData = {
+			foodId: householdData.foods.length ? householdData.foods[0].id : null,
+			petId: householdData.pets.length ? householdData.pets[0].id : null,
+			timestamp: Date.now(),
+			...feeding,
+		};
+		return modal.set(
+			bind(CreateFeedingForm, {
+				form: initialData,
+				feeding: initialData,
+				availablePets: householdData.pets,
+				availableFoods: householdData.foods,
+				successCallback: () => {
+					console.log('Successfully created feeding.');
+					closeModal();
+				},
+				cancel: closeModal,
+			} as ComponentProps<CreateFeedingForm>),
+		);
+	};
+
 	export let data: PageData;
 </script>
 
@@ -68,11 +94,11 @@
 					<h3 class="household_header_name">
 						{household.name}
 						{#if household.youAreManager}
-							<span class="household_header_name_role"
-								><Icon icon="material-symbols:star" />Manager<Icon
-									icon="material-symbols:star"
-								/></span
-							>
+							<span class="household_header_name_role">
+								<Icon icon="material-symbols:star" />
+								Manager
+								<Icon icon="material-symbols:star" />
+							</span>
 						{/if}
 					</h3>
 					<button
@@ -105,11 +131,28 @@
 							{#each household.pets as pet}
 								<tr>
 									<td><strong>{pet.name}</strong></td>
-									<td
-										>{#if pet.isPresent}<div class="icon-wrapper">
+									<td>
+										{#if pet.isPresent}
+											<div class="icon-wrapper">
 												<Icon icon="material-symbols:check-box" />
-											</div>{/if}</td
-									>
+											</div>
+										{/if}
+									</td>
+									<td>
+										<button
+											class="button with-icon"
+											type="button"
+											data-form-action="create"
+											on:click={() =>
+												showCreateFeedingForm(
+													{ petId: pet.id },
+													{ pets: household.pets, foods: household.foods },
+												)}
+										>
+											<Icon icon="mdi:bowl" />
+											Feed
+										</button>
+									</td>
 								</tr>
 							{/each}
 						</tbody>

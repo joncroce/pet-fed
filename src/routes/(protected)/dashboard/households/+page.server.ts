@@ -54,6 +54,7 @@ export const load = (async ({ locals }) => {
 					name: true,
 					amountInStock: true,
 					unitName: true,
+					minFractionalAmount: true,
 				},
 			},
 		},
