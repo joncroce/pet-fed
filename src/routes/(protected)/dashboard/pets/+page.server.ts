@@ -9,7 +9,7 @@ export const load = (async ({ locals }) => {
 
 	const personsOnPets = await db.personsOnPets.findMany({
 		where: { personId: locals.user.personId },
-		select: { isOwner: true, pet: { select: { id: true, name: true, feedings: true } } }
+		select: { isOwner: true, pet: { select: { id: true, name: true, feedings: true } } },
 	});
 
 	const pets = personsOnPets.map(({ isOwner, pet }) => {
@@ -20,14 +20,14 @@ export const load = (async ({ locals }) => {
 
 	const personsOnHouseholds = await db.personsOnHouseholds.findMany({
 		where: { residentId: locals.user.personId, isManager: true },
-		select: { household: { select: { id: true, name: true } } }
+		select: { household: { select: { id: true, name: true } } },
 	});
 
 	const availableHouseholds = personsOnHouseholds.map((record) => record.household);
 
 	return {
 		pets,
-		availableHouseholds
+		availableHouseholds,
 	};
 }) satisfies PageServerLoad;
 
@@ -52,40 +52,40 @@ const createPet: Action = async ({ request, locals }) => {
 	try {
 		const newPet = await db.pet.create({
 			data: {
-				name: name
-			}
+				name: name,
+			},
 		});
 
 		await db.personsOnPets.create({
 			data: {
 				person: {
 					connect: {
-						id: personId
-					}
+						id: personId,
+					},
 				},
 				pet: {
 					connect: {
-						id: newPet.id
-					}
+						id: newPet.id,
+					},
 				},
-				isOwner: true
-			}
+				isOwner: true,
+			},
 		});
 
 		await db.petsOnHouseholds.create({
 			data: {
 				pet: {
 					connect: {
-						id: newPet.id
-					}
+						id: newPet.id,
+					},
 				},
 				household: {
 					connect: {
-						id: householdId
-					}
+						id: householdId,
+					},
 				},
-				isPresent: Boolean(isPresent)
-			}
+				isPresent: Boolean(isPresent),
+			},
 		});
 
 		return <ActionResult>{ type: 'success', status: 201, name };

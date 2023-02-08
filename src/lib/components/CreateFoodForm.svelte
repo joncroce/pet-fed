@@ -4,6 +4,7 @@
 	import type { ActionData } from '../../routes/(protected)/dashboard/foods/$types';
 	export let availableHouseholds: { id: string; name: string }[];
 	export let disableHouseholdSelect: boolean;
+	// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 	export let successCallback: (data?: Record<string, any> | undefined) => void;
 	export let cancel: () => void;
 	export let form: ActionData;

@@ -60,7 +60,7 @@ h2 {
 			gap: 0.3em;
 		}
 
-		label:has(input[type="checkbox"]) {
+		label:has(input[type='checkbox']) {
 			flex-direction: row;
 			justify-content: flex-start;
 			align-items: center;
@@ -153,42 +153,41 @@ li.card > a {
 	background-color: var(--color-bone);
 }
 
-
 /* Tables */
 table,
-	th,
-	td {
-		border: 1px solid var(--color-chocolate-dark);
-		font-size: 1.2rem;
-	}
+th,
+td {
+	border: 1px solid var(--color-chocolate-dark);
+	font-size: 1.2rem;
+}
 
-	th,
-	td {
-		padding: 0.25em 0.5em;
-		text-align: center;
-	}
+th,
+td {
+	padding: 0.25em 0.5em;
+	text-align: center;
+}
 
-	.icon-wrapper {
+.icon-wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.options_list {
+	li {
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
 		align-items: center;
-	}
+		gap: 1rem;
+		font-size: 1.2rem;
+		font-family: 'Gantari', sans-serif;
 
-	.options_list {
-		li {
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-			gap: 1rem;
-			font-size: 1.2rem;
-			font-family: 'Gantari', sans-serif;
-
-			button {
-				font-size: inherit;
-			}
+		button {
+			font-size: inherit;
 		}
 	}
+}
 
-	.button-warn {
-		background-color: var(--color-red);
-	}
+.button-warn {
+	background-color: var(--color-red);
+}

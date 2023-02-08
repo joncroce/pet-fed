@@ -32,7 +32,7 @@ const login: Action = async ({ request, cookies }) => {
 
 	const authenticatedUser = await db.user.update({
 		where: { username: user.username },
-		data: { authToken: crypto.randomUUID() }
+		data: { authToken: crypto.randomUUID() },
 	});
 
 	cookies.set('auth', authenticatedUser.authToken, {
@@ -40,7 +40,7 @@ const login: Action = async ({ request, cookies }) => {
 		httpOnly: true,
 		sameSite: 'strict',
 		secure: process.env.NODE_ENV === 'production',
-		maxAge: 60 * 60 * 24 * 7 // One week
+		maxAge: 60 * 60 * 24 * 7, // One week
 	});
 
 	throw redirect(303, '/dashboard');

@@ -9,13 +9,13 @@ export const authenticateUser = async (event: RequestEvent) => {
 	if (typeof authToken === 'string' && authToken.length) {
 		const user = await db.user.findUnique({
 			where: { authToken },
-			select: { username: true, person: true }
+			select: { username: true, person: true },
 		});
 
 		if (user && user.person) {
 			return {
 				name: user.username,
-				personId: user.person.id
+				personId: user.person.id,
 			};
 		}
 	}

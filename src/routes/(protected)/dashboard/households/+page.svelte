@@ -11,8 +11,8 @@
 	$: formDisplayStatus = Object.fromEntries(
 		data.households.map((household) => [
 			household.id,
-			Object.fromEntries(['pets', 'persons', 'foods'].map((subgroup) => [subgroup, false]))
-		])
+			Object.fromEntries(['pets', 'persons', 'foods'].map((subgroup) => [subgroup, false])),
+		]),
 	);
 
 	function toggleForm(householdId: string, subgroupName: Subgroup) {
@@ -39,7 +39,9 @@
 			</div>
 			<section data-household-subgroup="pets">
 				<div class="household_subgroup_header">
-					<h4 class="household_subgroup_header_name">Pets ({household.pets.length})</h4>
+					<h4 class="household_subgroup_header_name">
+						Pets <span class="household_subgroup_header_count">({household.pets.length})</span>
+					</h4>
 					<button
 						class={`button button-${formDisplayStatus[household.id]['pets'] ? 'close' : 'open'}`}
 						on:click={() => toggleForm(household.id, 'pets')}
@@ -69,7 +71,10 @@
 			</section>
 			<section data-household-subgroup="persons">
 				<div class="household_subgroup_header">
-					<h4 class="household_subgroup_header_name">Persons ({household.persons.length})</h4>
+					<h4 class="household_subgroup_header_name">
+						Persons <span class="household_subgroup_header_count">({household.persons.length})</span
+						>
+					</h4>
 					<button
 						class={`button button-${formDisplayStatus[household.id]['persons'] ? 'close' : 'open'}`}
 						on:click={() => toggleForm(household.id, 'persons')}
@@ -116,7 +121,9 @@
 			</section>
 			<section data-household-subgroup="foods">
 				<div class="household_subgroup_header">
-					<h4 class="household_subgroup_header_name">Foods ({household.foods.length})</h4>
+					<h4 class="household_subgroup_header_name">
+						Foods <span class="household_subgroup_header_count">({household.foods.length})</span>
+					</h4>
 					<button
 						class={`button button-${formDisplayStatus[household.id]['foods'] ? 'close' : 'open'}`}
 						on:click={() => toggleForm(household.id, 'foods')}

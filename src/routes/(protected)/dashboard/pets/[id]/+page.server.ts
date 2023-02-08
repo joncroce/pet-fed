@@ -9,46 +9,46 @@ export const load = (async ({ locals, params }) => {
 
 	const petRecord = await db.pet.findUniqueOrThrow({
 		where: {
-			id: params.id
+			id: params.id,
 		},
 		include: {
 			feedings: {
 				orderBy: {
-					time: 'desc'
+					time: 'desc',
 				},
 				take: 5,
 				include: {
 					food: true,
 					household: true,
-					person: true
-				}
+					person: true,
+				},
 			},
 			households: {
 				orderBy: {
-					isPresent: 'desc'
+					isPresent: 'desc',
 				},
 				include: {
 					household: {
 						select: {
-							name: true
-						}
-					}
-				}
+							name: true,
+						},
+					},
+				},
 			},
 			persons: {
 				orderBy: {
-					isOwner: 'desc'
+					isOwner: 'desc',
 				},
 				include: {
 					person: {
 						select: {
 							id: true,
-							displayName: true
-						}
-					}
-				}
-			}
-		}
+							displayName: true,
+						},
+					},
+				},
+			},
+		},
 	});
 
 	if (!petRecord) {
@@ -60,13 +60,13 @@ export const load = (async ({ locals, params }) => {
 		feedings: petRecord.feedings,
 		households: petRecord.households.map((petOnHousehold) => ({
 			name: petOnHousehold.household.name,
-			isPresent: petOnHousehold.isPresent
+			isPresent: petOnHousehold.isPresent,
 		})),
 		persons: petRecord.persons.map((personOnPet) => ({
 			id: personOnPet.personId,
 			name: personOnPet.person.displayName,
-			isOwner: personOnPet.isOwner
-		}))
+			isOwner: personOnPet.isOwner,
+		})),
 	};
 
 	const youAreOwner =
@@ -74,7 +74,7 @@ export const load = (async ({ locals, params }) => {
 
 	return {
 		pet: petData,
-		youAreOwner
+		youAreOwner,
 	};
 }) satisfies PageServerLoad;
 
@@ -88,11 +88,11 @@ const deletePet: Action = async ({ params, locals }) => {
 
 	try {
 		await db.personsOnPets.delete({
-			where: { petId_personId: { personId: personId, petId: petId } }
+			where: { petId_personId: { personId: personId, petId: petId } },
 		});
 
 		await db.pet.delete({
-			where: { id: petId }
+			where: { id: petId },
 		});
 
 		return <ActionResult>{ type: 'success', status: 204 };

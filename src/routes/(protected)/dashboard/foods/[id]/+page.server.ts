@@ -16,18 +16,18 @@ export const load = (async ({ locals, params }) => {
 			where: {
 				AND: {
 					id: {
-						equals: params.id
+						equals: params.id,
 					},
 					household: {
 						persons: {
 							some: {
 								residentId: {
-									equals: locals.user.personId
+									equals: locals.user.personId,
 								},
-							}
-						}
-					}
-				}
+							},
+						},
+					},
+				},
 			},
 			include: {
 				household: {
@@ -35,20 +35,20 @@ export const load = (async ({ locals, params }) => {
 						persons: {
 							where: {
 								residentId: {
-									equals: locals.user.personId
-								}
+									equals: locals.user.personId,
+								},
 							},
 							select: {
-								isManager: true
-							}
-						}
-					}
-				}
-			}
+								isManager: true,
+							},
+						},
+					},
+				},
+			},
 		});
 	} catch (e: unknown) {
 		console.log(e);
-		if ((e as PrismaClientKnownRequestError).code = 'P2025') {
+		if ((e as PrismaClientKnownRequestError).code === 'P2025') {
 			throw error(404);
 		} else {
 			throw error(500);
@@ -66,9 +66,8 @@ export const load = (async ({ locals, params }) => {
 			minFractionalAmount,
 			unitName,
 			createdAt,
-			updatedAt
+			updatedAt,
 		},
-		userCanEdit
+		userCanEdit,
 	};
-
 }) satisfies PageServerLoad;

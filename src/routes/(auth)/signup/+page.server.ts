@@ -20,7 +20,7 @@ const register: Action = async ({ request, cookies }) => {
 	}
 
 	const user = await db.user.findUnique({
-		where: { username }
+		where: { username },
 	});
 
 	if (user) {
@@ -31,8 +31,8 @@ const register: Action = async ({ request, cookies }) => {
 		data: {
 			username,
 			passwordHash: await bcrypt.hash(password, 10),
-			authToken: crypto.randomUUID()
-		}
+			authToken: crypto.randomUUID(),
+		},
 	});
 
 	const createdPerson = await db.person.create({
@@ -40,33 +40,33 @@ const register: Action = async ({ request, cookies }) => {
 			displayName: createdUser.username,
 			user: {
 				connect: {
-					id: createdUser.id
-				}
-			}
-		}
+					id: createdUser.id,
+				},
+			},
+		},
 	});
 
 	const createdHousehold = await db.household.create({
 		data: {
-			name: 'Home'
-		}
+			name: 'Home',
+		},
 	});
 
 	await db.personsOnHouseholds.create({
 		data: {
 			household: {
 				connect: {
-					id: createdHousehold.id
-				}
+					id: createdHousehold.id,
+				},
 			},
 			resident: {
 				connect: {
-					id: createdPerson.id
-				}
+					id: createdPerson.id,
+				},
 			},
 			isManager: true,
-			isPresent: true
-		}
+			isPresent: true,
+		},
 	});
 
 	cookies.set('auth', createdUser.authToken, {
@@ -74,7 +74,7 @@ const register: Action = async ({ request, cookies }) => {
 		httpOnly: true,
 		sameSite: 'strict',
 		secure: process.env.NODE_ENV === 'production',
-		maxAge: 60 * 60 * 24 * 7 // One week
+		maxAge: 60 * 60 * 24 * 7, // One week
 	});
 
 	throw redirect(303, '/dashboard');

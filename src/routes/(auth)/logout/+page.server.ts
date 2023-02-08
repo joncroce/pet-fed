@@ -5,5 +5,5 @@ export const actions: Actions = {
 	default({ cookies }) {
 		cookies.delete('auth');
 		throw redirect(302, '/');
-	}
+	},
 };

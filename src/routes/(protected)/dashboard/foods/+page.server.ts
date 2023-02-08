@@ -14,15 +14,15 @@ export const load = (async ({ locals }) => {
 					some: {
 						AND: {
 							residentId: {
-								equals: locals.user.personId
+								equals: locals.user.personId,
 							},
 							isManager: {
-								equals: true
-							}
-						}
-					}
-				}
-			}
+								equals: true,
+							},
+						},
+					},
+				},
+			},
 		},
 	});
 
@@ -32,24 +32,24 @@ export const load = (async ({ locals }) => {
 				some: {
 					AND: {
 						residentId: {
-							equals: locals.user.personId
+							equals: locals.user.personId,
 						},
 						isManager: {
-							equals: true
-						}
-					}
-				}
-			}
+							equals: true,
+						},
+					},
+				},
+			},
 		},
 		select: {
 			id: true,
 			name: true,
-		}
+		},
 	});
 
 	return {
 		foods,
-		availableHouseholds
+		availableHouseholds,
 	};
 }) satisfies PageServerLoad;
 
@@ -72,12 +72,12 @@ const create: Action = async ({ request, locals }) => {
 			['name', name],
 			['amountInStock', amountInStock !== null ? Number(amountInStock) : null],
 			['unitName', unitName],
-			['minFractionalAmount', minFractionalAmount !== null ? Number(minFractionalAmount) : null]
+			['minFractionalAmount', minFractionalAmount !== null ? Number(minFractionalAmount) : null],
 		].filter(
 			([, /* fieldName */ fieldValue]) =>
 				(typeof fieldValue === 'string' && fieldValue.length) ||
-				(typeof fieldValue === 'number' && fieldValue)
-		)
+				(typeof fieldValue === 'number' && fieldValue),
+		),
 	);
 
 	try {
@@ -85,11 +85,11 @@ const create: Action = async ({ request, locals }) => {
 			data: {
 				household: {
 					connect: {
-						id: householdId
-					}
+						id: householdId,
+					},
 				},
-				...newFoodData
-			}
+				...newFoodData,
+			},
 		});
 
 		return <ActionResult>{ type: 'success', status: 201, food: newFood };

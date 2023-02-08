@@ -12,10 +12,10 @@ export const load = (async ({ locals }) => {
 			persons: {
 				some: {
 					residentId: {
-						equals: locals.user.personId
-					}
-				}
-			}
+						equals: locals.user.personId,
+					},
+				},
+			},
 		},
 		include: {
 			pets: {
@@ -24,10 +24,10 @@ export const load = (async ({ locals }) => {
 					pet: {
 						select: {
 							id: true,
-							name: true
-						}
-					}
-				}
+							name: true,
+						},
+					},
+				},
 			},
 			persons: {
 				select: {
@@ -37,24 +37,24 @@ export const load = (async ({ locals }) => {
 					inviter: {
 						select: {
 							id: true,
-							displayName: true
-						}
+							displayName: true,
+						},
 					},
 					resident: {
 						select: {
 							id: true,
-							displayName: true
-						}
-					}
-				}
+							displayName: true,
+						},
+					},
+				},
 			},
 			foods: {
 				select: {
 					id: true,
 					name: true,
 					amountInStock: true,
-					unitName: true
-				}
+					unitName: true,
+				},
 			},
 		},
 	});
@@ -63,9 +63,10 @@ export const load = (async ({ locals }) => {
 		households: householdRecords.map((household) => ({
 			id: household.id,
 			name: household.name,
-			youAreManager: household.persons.findIndex(
-				(person) =>
-					person.resident.id === locals.user?.personId && person.isManager) !== -1,
+			youAreManager:
+				household.persons.findIndex(
+					(person) => person.resident.id === locals.user?.personId && person.isManager,
+				) !== -1,
 			pets: household.pets.map((pet) => ({
 				...pet.pet,
 				isPresent: pet.isPresent,
@@ -77,8 +78,7 @@ export const load = (async ({ locals }) => {
 				invitedBy: person.inviter?.displayName ?? null,
 				invitationAccepted: person.invitationAccepted,
 			})),
-			foods: household.foods
-		}))
+			foods: household.foods,
+		})),
 	};
-
 }) satisfies PageServerLoad;

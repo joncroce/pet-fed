@@ -106,7 +106,7 @@
 							return async ({ result }) => {
 								if (result.type === 'success') {
 									goto('/dashboard/pets', {
-										invalidateAll: true
+										invalidateAll: true,
 									});
 								}
 							};
@@ -127,7 +127,7 @@
 		return async ({ result }) => {
 			if (result.type === 'success') {
 				goto('/dashboard/pets', {
-					invalidateAll: true
+					invalidateAll: true,
 				});
 			}
 		};
