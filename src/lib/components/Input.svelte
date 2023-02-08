@@ -8,10 +8,23 @@
 	export let type = 'text';
 	export let placeholder: string | null | undefined = '';
 	export let required = false;
+	export let disabled = false;
 	const onInput = (e: Event) => (value = (e.target as HTMLInputElement).value);
 </script>
 
-<input {id} {type} {name} {placeholder} {required} {value} {step} {min} {max} on:input={onInput} />
+<input
+	{id}
+	{type}
+	{name}
+	{placeholder}
+	{value}
+	{step}
+	{min}
+	{max}
+	{required}
+	{disabled}
+	on:input={onInput}
+/>
 
 <style>
 	input {
