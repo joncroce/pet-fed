@@ -1,6 +1,6 @@
 import { db } from '$lib/database';
-import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { fail, redirect, type ActionResult } from '@sveltejs/kit';
+import type { Action, Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
 	if (!locals.user) {
@@ -82,3 +82,49 @@ export const load = (async ({ locals }) => {
 		})),
 	};
 }) satisfies PageServerLoad;
+
+const editName: Action = async ({ request, locals }) => {
+	const formData = await request.formData();
+	const personId = locals.user?.personId;
+
+	if (typeof personId !== 'string' || !personId) {
+		return fail(401, { unauthorized: true });
+	}
+
+	const id = String(formData.get('id') ?? '');
+	const name = String(formData.get('name') ?? '');
+
+	try {
+		const personOnHousehold = await db.personsOnHouseholds.findUniqueOrThrow({
+			where: {
+				residentId_householdId: {
+					householdId: id,
+					residentId: personId,
+				},
+			},
+			select: {
+				isManager: true,
+			},
+		});
+
+		if (!personOnHousehold.isManager) {
+			return fail(401, { unauthorized: true });
+		}
+
+		const updatedHousehold = await db.household.update({
+			where: {
+				id,
+			},
+			data: {
+				name,
+			},
+		});
+
+		return <ActionResult>{ type: 'success', status: 200, household: updatedHousehold };
+	} catch (e) {
+		console.log(e);
+		return fail(500);
+	}
+};
+
+export const actions: Actions = { editName };
