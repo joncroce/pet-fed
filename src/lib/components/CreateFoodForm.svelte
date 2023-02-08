@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import Input from '$lib/components/Input.svelte';
 	import type { ActionData } from '../../routes/(protected)/dashboard/foods/$types';
+
 	export let availableHouseholds: { id: string; name: string }[];
 	export let disableHouseholdSelect: boolean;
 	export let successCallback: (data?: Record<string, unknown> | undefined) => void;
@@ -27,24 +28,26 @@
 	{#if disableHouseholdSelect}
 		<input id="householdId" name="householdId" type="text" value={form?.householdId} hidden />
 	{:else}
-		<label for="household"
-			>Household
+		<label for="householdId">
+			Household
 			<div class="select">
-				<select id="household" name="household">
+				<select id="householdId" name="householdId">
 					{#each availableHouseholds as household}
-						<option value={household.id}>{household.name}</option>
+						<option value={household.id}>
+							{household.name}
+						</option>
 					{/each}
 				</select>
 				<span class="focus" />
 			</div>
 		</label>
 	{/if}
-	<label for="name"
-		>Name
+	<label for="name">
+		Name
 		<Input id="name" name="name" type="text" value={form?.name || ''} placeholder="Food" required />
 	</label>
-	<label for="amountInStock"
-		>Amount in Stock
+	<label for="amountInStock">
+		Amount in Stock
 		<Input
 			id="amountInStock"
 			name="amountInStock"
