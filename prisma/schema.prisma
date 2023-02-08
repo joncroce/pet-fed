@@ -39,7 +39,6 @@ model Household {
   persons   PersonsOnHouseholds[]
   pets      PetsOnHouseholds[]
   foods     Food[]
-  feedings  Feeding[]
   createdAt DateTime              @default(now())
   updatedAt DateTime              @updatedAt()
 }
@@ -68,19 +67,18 @@ model Food {
 }
 
 model Feeding {
-  id          String     @id @default(uuid())
-  person      Person?    @relation(fields: [personId], references: [id], onDelete: SetNull)
-  personId    String?
-  pet         Pet?       @relation(fields: [petId], references: [id], onDelete: SetNull)
-  petId       String?
-  food        Food?      @relation(fields: [foodId], references: [id], onDelete: SetNull)
-  foodId      String?
-  household   Household? @relation(fields: [householdId], references: [id], onDelete: SetNull)
-  householdId String?
-  note        String?
-  time        DateTime   @default(now())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt()
+  id        String   @id @default(uuid())
+  person    Person?  @relation(fields: [personId], references: [id], onDelete: SetNull)
+  personId  String?
+  pet       Pet?     @relation(fields: [petId], references: [id], onDelete: SetNull)
+  petId     String?
+  food      Food?    @relation(fields: [foodId], references: [id], onDelete: SetNull)
+  foodId    String?
+  amount    Float
+  unitName  String
+  timestamp DateTime @default(now()) // unix timestamp
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model PersonsOnPets {
